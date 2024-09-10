@@ -1,3 +1,4 @@
+const { Collection, Routes } = require("discord.js");
 const colors = require("colors");
 const AsciiTable = require("ascii-table");
 const loadFiles = require("./loadFiles.js");
@@ -9,19 +10,26 @@ table.removeBorder().setAlign(1, AsciiTable.RIGHT).setJustify(true);
  *@param {String} dir - path of events directory
  */
 module.exports = async (client, dir) => {
-  client.log(colors.yellow(" | started to load events."));
+  client.log(colors.yellow(" | started to load commands."));
   const files = await loadFiles(dir);
-  client.events.clear();
+  const applicationCommands = [];
 
-  let i = 0;
+  client.commands.clear();
+  client.slashCommands.clear();
+
+  let i = 0,
+    p = 0;
   for (const file of files) {
     try {
-      const event = require(file);
-      const execute = (...args) => event.execute(client, ...args);
-      const target = event.rest ? client.rest : client;
+      const object = require(file);
 
-      client.events.set(event.name, execute);
-      target[event.once ? "once" : "on"](event.name, execute);
+      if (object.enabled) continue;
+      if (object.cooldown) {
+        client.cooldowns.set(object.data?.name, new Collection());
+      }
+
+      applicationCommands.push(object.data);
+      client.slashCommands.set(object.data.name, object);
 
       table.addRow(file.replace(/\\/g, "/").split("/").pop(), "✅");
       i++;
@@ -41,5 +49,15 @@ module.exports = async (client, dir) => {
       bottom: 1,
     },
   });
-  client.log(colors.blue(` | loaded ${i} events.`));
+
+  client.rest.put(
+    Routes.applicationGuildCommands(
+      client.config.bot.id,
+      client.config.serverId
+    ),
+    {
+      body: applicationCommands,
+    }
+  );
+  client.log(colors.blue(` | loaded ${i} commands.`));
 };
