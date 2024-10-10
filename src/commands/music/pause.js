@@ -8,18 +8,18 @@ const {
 /** @type {import("@types/commands").CommandStructure} */
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("stop")
-    .setDescription("stop the bot from playing music")
+    .setName("pause")
+    .setDescription("pause or stop music now playing music")
     .setContexts(InteractionContextType.Guild)
     .setIntegrationTypes(ApplicationIntegrationType.GuildInstall),
-  aliases: ["pl"],
-  usage: "/play < option >| {prefix}play <song-name | options>",
+  aliases: ["pus"],
+  usage: "/pause < option >| {prefix}pause < options>",
   cooldown: 0,
   category: "MUSIC",
   disabled: false,
-  global: true,
+  global: false,
   guildOnly: true,
-  devOnly: false,
+  devOnly: true,
   inVoiceChannel: true,
   botPermissions: ["SendMessages", "SendMessagesInThreads"],
   userPermissions: [],
