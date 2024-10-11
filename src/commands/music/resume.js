@@ -7,8 +7,8 @@ const {
 
 /** @type {import("@types/commands").CommandStructure} */
 module.exports = {
-  name: "pause",
-  description: "pause or stop the current music player",
+  name: "resume",
+  description: "resume or start the current music player",
   cooldown: 0,
   category: "MUSIC",
   isPremium: false,
@@ -20,7 +20,7 @@ module.exports = {
   userPermissions: [],
   prefixCommand: {
     enabled: true,
-    aliases: ["halt"],
+    aliases: ["start"],
     usage: "<options>",
     minArgsCount: 0,
     subcommands: [],
@@ -28,10 +28,10 @@ module.exports = {
   slashCommand: {
     enabled: true,
     ephemeral: true,
-    usage: "/pause <options>",
+    usage: "/resume <options>",
     data: new SlashCommandBuilder()
-      .setName("pause")
-      .setDescription("pause or stop the current music player")
+      .setName("resume")
+      .setDescription("resume or start the current music player")
       .setContexts(InteractionContextType.Guild)
       .setIntegrationTypes(ApplicationIntegrationType.GuildInstall),
   },
@@ -48,15 +48,15 @@ module.exports = {
       });
     }
 
-    if (player.playing) {
-      player.pause();
+    if (player.paused) {
+      player.resume();
     }
 
     return interaction.reply({
       embeds: [
         new EmbedBuilder()
           .setColor(client.colors.Wrong)
-          .setTitle("**Paused the music player. user `/resume` to resume the player**"),
+          .setTitle("**Started playing music again.**"),
       ],
     });
   },
