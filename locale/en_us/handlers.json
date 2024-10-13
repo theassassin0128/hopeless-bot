@@ -3,6 +3,6 @@
     "prefix": {}
   },
   "embeds": {
-    "footer": "Copyright © 2023 - {new:date:year} | @{owner:name}"
+    "footer": "Copyright © 2024 - {new:date:year} | @{owner:name}"
   }
 }
