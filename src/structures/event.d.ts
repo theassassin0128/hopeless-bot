@@ -1,7 +1,9 @@
+// Typing for base structures located in ./src/structures
+
 import { DiscordBot } from "@lib/DiscordBot";
 
 // Discord.JS Event Names
-export type DiscordEventNames =
+export type DiscordEvents =
   | "applicationCommandPermissionsUpdate"
   | "autoModerationActionExecution"
   | "autoModerationRuleCreate"
@@ -82,28 +84,7 @@ export type DiscordEventNames =
   | "webhooksUpdate"
   | "webhookUpdate";
 
-// Moonlink Client Events
-export type MoonlinkEventNames =
-  | "autoLeaved"
-  | "debug"
-  | "nodeClose"
-  | "nodeCreate"
-  | "nodeDestroy"
-  | "nodeError"
-  | "nodeRaw"
-  | "nodeReconnect"
-  | "playerCreated"
-  | "playerDisconnect"
-  | "playerMove"
-  | "playerResume"
-  | "queueEnd"
-  | "socketClosed"
-  | "trackEnd"
-  | "trackError"
-  | "trackStart"
-  | "trackStuck";
-
-export type LavalinkclientEvents =
+export type LavalinkClientEvents =
   | "playerCreate"
   | "playerDestroy"
   | "playerDisconnect"
@@ -126,12 +107,13 @@ export type LavalinkclientEvents =
   | "error"
   | "resumed";
 
-// Base Event Module Structure
+//Event Module Structure
 export interface EventStructure {
-  name: DiscordEventNames | MoonlinkEventNames;
-  once: boolean;
-  rest: boolean;
-  ws: boolean;
-  moonlink: boolean;
-  execute(client: DiscordBot, ...args: any): Promise<any>;
+  name: DiscordEvents | LavalinkClientEvents;
+  once?: boolean;
+  rest?: boolean;
+  ws?: boolean;
+  lavalink?: boolean;
+  lavalink_node?: boolean;
+  execute: (client: DiscordBot, ...args: any) => Promise<any>;
 }
